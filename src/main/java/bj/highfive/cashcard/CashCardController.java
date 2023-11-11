@@ -74,10 +74,10 @@ public class CashCardController {
     private ResponseEntity<Void> deleteCashCard(@PathVariable Long id, Principal principal) {
 
         // Add the following 3 lines:
-        if (!cashCardRepository.existsByIdAndOwner(id, principal.getName())) {
-            return ResponseEntity.notFound().build();
+        if (cashCardRepository.existsByIdAndOwner(id, principal.getName())) {
+            cashCardRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
         }
-        cashCardRepository.deleteById(id); // Add this line
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
     }
 }
